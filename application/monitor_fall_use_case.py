@@ -8,7 +8,7 @@ from domain.entities.person import Person
 class MonitorFallUseCase:
     def __init__(self):
         self.camera_service = CameraService()
-        self.camera_service.open_camera()  # Inicializa a câmera
+        self.camera_service.open_camera()  
         self.pose_detector = PoseDetector()
         self.fall_detection_service = FallDetectionService()
 
@@ -31,7 +31,6 @@ class MonitorFallUseCase:
 
                     if fallen:
                         print(f"[ALERTA] {self.person.name} pode ter caído!")
-                        # Aqui poderia ser chamado o serviço de alerta (ex: whatsapp)
 
                     self.pose_detector.draw_landmarks(frame)
 

@@ -46,7 +46,7 @@ class PoseDetector:
                 self.mp_drawing.DrawingSpec(color=(0, 0, 255), thickness=2)
             )
             
-            # Destacar pontos importantes
+         
             h, w, c = frame.shape
             important_points = [11, 12, 23, 24]  # Ombros e quadris
             
