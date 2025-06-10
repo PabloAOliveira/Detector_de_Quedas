@@ -9,31 +9,34 @@ class CameraService:
     def open_camera(self):
         print("[INFO] Abrindo câmera...")
         
-        # Tenta diferentes índices de câmera
-        for index in [0, 1, -1]:
-            print(f"[INFO] Tentando câmera {index}...")
-            self.cap = cv2.VideoCapture(index)
-            
+        # Para Raspberry Pi Camera
+        try:
+            self.cap = cv2.VideoCapture(0, cv2.CAP_V4L2)
             if self.cap.isOpened():
                 # Aguarda um pouco para a câmera inicializar
-                time.sleep(1)
+                time.sleep(2)  # Aumentado para 2 segundos
                 
                 # Testa se consegue capturar um frame
                 ret, frame = self.cap.read()
                 if ret and frame is not None:
-                    print(f"[INFO] Câmera {index} funcionando!")
+                    print(f"[INFO] Câmera funcionando!")
                     # Configura resolução para melhor performance
                     self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
                     self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
                     self.cap.set(cv2.CAP_PROP_FPS, 30)
                     return
                 else:
-                    print(f"[WARN] Câmera {index} abriu mas não captura frames")
+                    print("[WARN] Câmera abriu mas não captura frames")
                     self.cap.release()
             else:
-                print(f"[WARN] Não foi possível abrir câmera {index}")
+                print("[WARN] Não foi possível abrir a câmera")
                 if self.cap:
                     self.cap.release()
+                    
+        except Exception as e:
+            print(f"[ERRO] Erro ao abrir câmera: {str(e)}")
+            if self.cap:
+                self.cap.release()
         
         raise Exception("[ERRO] Nenhuma câmera funcional encontrada.")
 
